@@ -1,7 +1,6 @@
 <?php
 require_once 'config.php';
 
-// Process form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $conn = getConnection();
     
@@ -13,13 +12,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $availability = mysqli_real_escape_string($conn, $_POST['availability']);
     $eventPreference = mysqli_real_escape_string($conn, $_POST['eventPreference']);
     
-    // Handle checkboxes
     $skills = '';
     if (isset($_POST['skills']) && is_array($_POST['skills'])) {
         $skills = implode(', ', $_POST['skills']);
     }
     
-    // Handle file upload
     $resumePath = '';
     if (isset($_FILES['resume']) && $_FILES['resume']['error'] === 0) {
         $uploadDir = 'uploads/';
@@ -33,7 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     
-    // Insert into database
     $sql = "INSERT INTO volunteers (full_name, email, phone, age, address, skills, availability, event_preference, resume_path) 
             VALUES ('$fullName', '$email', '$phone', $age, '$address', '$skills', '$availability', '$eventPreference', '$resumePath')";
     
@@ -46,7 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     closeConnection($conn);
 }
 
-// Fetch events
 $conn = getConnection();
 $events_result = mysqli_query($conn, "SELECT event_name FROM events");
 ?>
